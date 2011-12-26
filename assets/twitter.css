@@ -1,0 +1,21 @@
+.twitter_standart input
+{
+    background: #00A0D1;
+    border:none;
+    border-radius: 3px;
+    color:#fff;
+    padding: 3px 7px;
+    cursor: pointer;
+    outline: none;
+}
+
+.twitter_box input
+{
+    background: url('/../images/twitter.png') no-repeat;
+    border: none;
+    height: 32px;
+    width: 32px;
+    text-indent: -9999px;
+    cursor: pointer;
+    outline: none;
+}
