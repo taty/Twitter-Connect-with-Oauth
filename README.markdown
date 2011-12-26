@@ -1,23 +1,13 @@
-## English ##
+## Yii Twitter Connect ##
 
-It is a simple library allowing you to transliterate between cyrillic and latin. It is easy to use from the command line and in your code.
+The Yii Twitter Connect Button that connect to the twitter with Oauth.
 
-Install it via: <code>gem install translit</code>
+### Installation ###
 
-### Usage ###
+Extract the [Yii Twitter Connect][1] from archive under protected/extensions
+[1]: https://github.com/taty/Twitter-Connect-with-Oauth        "Yii Twitter Connect"
 
-To use translit from the command line you just type <code>translit [your_input_here]</code> where your input could be in cyrillic or latin.
+## Usage and Configuration ##
 
-Or you can translit stdin now via just: <code>translit</code>. To stop stdin input use .\n (press dot and then enter on the new line)
+For use [Yii Twitter Connect][1] need to specify new route in log component:
 
-## Русский ##
-
-Это простая и элегантная программа позволит вам проводить транслитерацию между кирилицой и латиницой. Ее легко использовать как в коммандной строке так и в вашем коде.
-
-Устанавливается она просто: <code>gem install translit</code>
-
-### Использование ###
-
-Для использования translit в командной строке просто напишите <code>translit [your_input_here]</code> где ваш текст может быть написан успользуя русскую клавиатуру либо латинскую
-
-Либо вы можете просто вызвать программу и передавать текст в потоке чтения данных <code>translit</code>. Чтобы прервать поток используется стандарная система .\n (напишите . и нажмите enter на чистой строке)
