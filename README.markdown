@@ -14,6 +14,8 @@ For use [Yii Twitter Connect with Oauth][1] need to add some code to configure t
 ``` php
 <?php
 //...
+	'preload' => array('log','twitterconnect'),
+//...
 	'twitterconnect' => array(
             'class' => 'ext.twitterconnect.TwitterConnect',
             'consumerKey' => 'YOUR_APP_CONSUMER_KEY',
