@@ -47,13 +47,13 @@ class TwitterConnect extends CApplicationComponent
         if(!empty($this->consumerKey) && !empty($this->consumerSecret))
         {
 
-            Yii::app()->attachEventHandler('onBeginRequest', array($this, 'onBeginRequest'));
-            Yii::app()->attachEventHandler('onEndRequest', array($this, 'onEndRequest'));
             Yii::setPathOfAlias('twitterconnect', dirname(__FILE__));
             Yii::import('twitterconnect.*');
+            Yii::import('twitterconnect.controllers.*');
+            
             Yii::app()->configure(array('controllerMap' => array(
                 'twconnect' => array(
-                    'class' => 'twitterconnect.controllers.TwitterConnectController',
+                    'class' => 'TwitterConnectController',
                     'consumerKey' => $this->consumerKey,
                     'consumerSecret' => $this->consumerSecret
                 )
@@ -63,33 +63,6 @@ class TwitterConnect extends CApplicationComponent
         {
             throw new Exception('You need to add consumerKey and consumerSecret to config file');
         }
-    }
-    /**
-    * Function onBeginRequest.
-    *
-    * Description of onBeginRequest.
-    *
-    * @param object $event Event object.
-    *
-    * @return
-    */
-    protected function onBeginRequest(CEvent $event)
-    {
-        
-    }
-    /**
-    * Function onEndRequest.
-    *
-    * Description of onEndRequest.
-    *
-    * @param object $event Event object.
-    *
-    * @return
-    */
-    protected function onEndRequest(CEvent $event)
-    {
-
-    }
-    
+    }    
     
 }
