@@ -32,14 +32,7 @@ class TwitterConnect extends CApplicationComponent
     *
     * @var string consumerSecret.
     */
-    public $consumerSecret;
-
-    /**
-    * Description of twitterWidget variable.
-    *
-    * @var string twitterWidget.
-    */
-    private $_twitterWidget;
+    public $consumerSecret;  
 
     /**
     * Initializes the controller.
@@ -58,10 +51,9 @@ class TwitterConnect extends CApplicationComponent
             Yii::app()->attachEventHandler('onEndRequest', array($this, 'onEndRequest'));
             Yii::setPathOfAlias('twitterconnect', dirname(__FILE__));
             Yii::import('twitterconnect.*');
-            Yii::import('twitterconnect.controllers.*');
             Yii::app()->configure(array('controllerMap' => array(
                 'twconnect' => array(
-                    'class' => 'ext.twitterconnect.controllers.TwitterConnectController',
+                    'class' => 'twitterconnect.controllers.TwitterConnectController',
                     'consumerKey' => $this->consumerKey,
                     'consumerSecret' => $this->consumerSecret
                 )
@@ -83,7 +75,7 @@ class TwitterConnect extends CApplicationComponent
     */
     protected function onBeginRequest(CEvent $event)
     {
-        $this->getTwitterWidget()->init();
+        
     }
     /**
     * Function onEndRequest.
@@ -98,21 +90,6 @@ class TwitterConnect extends CApplicationComponent
     {
 
     }
-    /**
-    * Function getTwitterWidget.
-    *
-    * Description of getTwitterWidget.
-    *
-    * @return
-    */
-    protected function getTwitterWidget()
-    {
-        if (null === $this->_twitterWidget)
-        {
-            $this->_twitterWidget = Yii::createComponent(array(
-                'class'=>'TwitterConnectButton',
-            ), $this);          
-        }
-        return $this->_twitterWidget;
-    }
+    
+    
 }

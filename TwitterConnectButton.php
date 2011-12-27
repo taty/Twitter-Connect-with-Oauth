@@ -46,7 +46,7 @@ class TwitterConnectButton extends CWidget
      */
     private $_options = array(
         'type'=>'button',
-        'id'=>'twconnect',
+        'class'=>'twconnect',
         'value'=>'Twitter Connect',
         'width'=>'',
         'style'=>'',
@@ -74,8 +74,7 @@ class TwitterConnectButton extends CWidget
    
     public function __construct($owner = null)
     {
-        parent::__construct($owner);
-        $this->_options = new CMap($this->_options, false);
+        parent::__construct($owner);        
     }
 
     /**
@@ -143,6 +142,9 @@ class TwitterConnectButton extends CWidget
     */    
     public function getOptions()
     {
+        if(is_null($this->_options) !== true){
+            $this->_options = new CMap($this->_options, false);
+        }
         return $this->_options;
     }
 
@@ -251,7 +253,8 @@ class TwitterConnectButton extends CWidget
 
     protected function registerConfigurationScripts()
     {
-        $url = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('ext.twitterconnect.assets'),
+        Yii::setPathOfAlias('twitterconnect', dirname(__FILE__));
+        $url = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('twitterconnect.assets'),
                 false, -1, YII_DEBUG);
 
         $cs = Yii::app()->clientScript
