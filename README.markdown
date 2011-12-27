@@ -20,7 +20,7 @@ For use [Yii Twitter Connect with Oauth][1] need to add some code to configure t
             'consumerSecret' => 'YOUR_APP_CONSUMER_SECRET',
         )
 ```
-and add it in view section:
+and you can add it in view section:
 
 ``` php
 <?php 
@@ -35,4 +35,8 @@ and add it in view section:
                   )
     );
 ```
+now avalible template:
+
+- box
+- standart
 
