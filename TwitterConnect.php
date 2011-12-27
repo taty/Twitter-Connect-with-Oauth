@@ -1,4 +1,5 @@
 <?php
+
 /**
  * TwitterConnect class.
  *
@@ -17,52 +18,47 @@
  *
  * TwitterConnect allows you to authorizate with twitter
  */
+class TwitterConnect extends CApplicationComponent {
 
-class TwitterConnect extends CApplicationComponent
-{
     /**
-    * Description of consumerKey variable.
-    *
-    * @var string consumerKey.
-    */
+     * Description of consumerKey variable.
+     *
+     * @var string consumerKey.
+     */
     public $consumerKey;
+    /**
+     * Description of consumerSecret variable.
+     *
+     * @var string consumerSecret.
+     */
+    public $consumerSecret;
 
     /**
-    * Description of consumerSecret variable.
-    *
-    * @var string consumerSecret.
-    */
-    public $consumerSecret;  
-
-    /**
-    * Initializes the controller.
-    *
-    * This method is called by the application before the controller starts to execute.
-    * @return
-    */
-    public function init()
-    {
+     * Initializes the controller.
+     *
+     * This method is called by the application before the controller starts to execute.
+     * @return
+     */
+    public function init() {
         parent::init();
 
-        if(!empty($this->consumerKey) && !empty($this->consumerSecret))
-        {
+        if (!empty($this->consumerKey) && !empty($this->consumerSecret)) {
 
             Yii::setPathOfAlias('twitterconnect', dirname(__FILE__));
             Yii::import('twitterconnect.*');
             Yii::import('twitterconnect.controllers.*');
-            
-            Yii::app()->configure(array('controllerMap' => array(
-                'twconnect' => array(
-                    'class' => 'TwitterConnectController',
-                    'consumerKey' => $this->consumerKey,
-                    'consumerSecret' => $this->consumerSecret
-                )
-            )));
-        }
-        else
-        {
+
+            Yii::app()->configure(array('controllerMap' => CMap::mergeArray(Yii::app()->controllerMap,
+                                    array('twconnect' => array(
+                                            'class' => 'TwitterConnectController',
+                                            'consumerKey' => $this->consumerKey,
+                                            'consumerSecret' => $this->consumerSecret
+                                        )
+                                    )
+                                ))
+            );
+        } else {
             throw new Exception('You need to add consumerKey and consumerSecret to config file');
         }
-    }    
-    
+    }   
 }
