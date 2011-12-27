@@ -16,7 +16,7 @@
     };
 
     $(document).ready(function(){
-        $('#twconnect').click(function(){
+        $('.twconnect').click(function(){
             $.showPopup({
                 path: '/twconnect',
                 callback: function(){
