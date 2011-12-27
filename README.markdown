@@ -11,7 +11,7 @@ Extract the [Yii Twitter Connect with Oauth][1] from archive under protected/ext
 
 For use [Yii Twitter Connect with Oauth][1] need to add some code to configure to the component section:
 
-<code>
+``` php
 <?php
 //...
 	'twitterconnect' => array(
@@ -19,5 +19,20 @@ For use [Yii Twitter Connect with Oauth][1] need to add some code to configure t
             'consumerKey' => 'YOUR_APP_CONSUMER_KEY',
             'consumerSecret' => 'YOUR_APP_CONSUMER_SECRET',
         )
-</code>
+```
+and add it in view section:
+
+``` php
+<?php 
+//...   
+    $this->widget('ext.twitterconnect.TwitterConnectButton', 
+            array(  'text' => 'Twitter', 
+                    'template' => 'standart',
+                    'style' => array(
+                        'font-size' => '12px',
+                        'font-weight'=>'bold'
+                     )
+                  )
+    );
+```
 
