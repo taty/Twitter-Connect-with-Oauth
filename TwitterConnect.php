@@ -18,7 +18,9 @@
  *
  * TwitterConnect allows you to authorizate with twitter
  */
-class TwitterConnect extends CApplicationComponent {
+
+class TwitterConnect extends CApplicationComponent
+{
 
     /**
     * Description of consumerKey variable.
@@ -63,8 +65,6 @@ class TwitterConnect extends CApplicationComponent {
     public function init() {
         parent::init();
         
-        Yii::app()->session->open();
-        
         if (!empty($this->consumerKey) && !empty($this->consumerSecret)) {
 
             Yii::setPathOfAlias('twitterconnect', dirname(__FILE__));
@@ -92,7 +92,7 @@ class TwitterConnect extends CApplicationComponent {
     * This method set oauth connection.
     *
     * @param string $method The method.
-    * @param string $type The type.
+    * @param string $type   The type.
     *
     * @return
     */
