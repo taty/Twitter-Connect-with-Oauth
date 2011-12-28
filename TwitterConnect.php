@@ -65,26 +65,17 @@ class TwitterConnect extends CApplicationComponent
     public function init() {
         parent::init();
         
-        if (!empty($this->consumerKey) && !empty($this->consumerSecret)) {
+        Yii::setPathOfAlias('twitterconnect', dirname(__FILE__));
+        Yii::import('twitterconnect.*');
+        Yii::import('twitterconnect.controllers.*');
 
-            Yii::setPathOfAlias('twitterconnect', dirname(__FILE__));
-            Yii::import('twitterconnect.*');
-            Yii::import('twitterconnect.controllers.*');
-
-            Yii::app()->configure(array('controllerMap' => CMap::mergeArray(Yii::app()->controllerMap,
-                                    array('twconnect' => array(
-                                            'class' => 'TwitterConnectController',
-                                            'twitterRequestUrl' => $this->twitterRequestUrl,
-                                            'twitterAccessUrl' => $this->twitterAccessUrl,
-                                            'twitterAutorizeUrl' => $this->twitterAutorizeUrl
+        Yii::app()->configure(array('controllerMap' => CMap::mergeArray(Yii::app()->controllerMap,
+                                     array('twconnect' => array(
+                                            'class' => 'TwitterConnectController',                                            
                                         )
                                     )
                                 ))
-            );
-            
-        } else {
-            throw new Exception('You need to add consumerKey and consumerSecret to config file');
-        }
+       );                    
     }
     /**
     * Function doOAuthConnection.
