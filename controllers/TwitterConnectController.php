@@ -20,21 +20,6 @@
 class TwitterConnectController extends Controller
 {
   
-    public $twitterRequestUrl;
-    /**
-     * Description of twitterAccessUrl variable.
-     *  
-     * @var string twitterAccessUrl.
-     */
-    public $twitterAccessUrl;
-    /**
-     * Description of twitterAutorizeUrl variable.
-     *  
-     * @var string twitterAutorizeUrl.
-     */
-    public $twitterAutorizeUrl;
-
-    
     /**
     * Function actionIndex.
     * 
@@ -43,6 +28,7 @@ class TwitterConnectController extends Controller
     * @return 
     */
     public function actionIndex() {
+
         if (is_null(Yii::app()->session->get('twitter')))
         {
             $this->userOAuth();
@@ -69,7 +55,7 @@ class TwitterConnectController extends Controller
                 
                 $oauth->setToken(Yii::app()->request->getParam('oauth_token'), Yii::app()->session->get('oauth_token_secret'));
                 
-                $accessToken = $oauth->getAccessToken($this->twitterAccessUrl);
+                $accessToken = $oauth->getAccessToken(Yii::app()->twitterconnect->twitterAccessUrl);
                 
                 Yii::app()->session->add('oauth_token', $accessToken['oauth_token']);
                 Yii::app()->session->add('oauth_token_secret', $accessToken['oauth_token_secret']);
@@ -86,10 +72,10 @@ class TwitterConnectController extends Controller
             }
             else
             {
-                $requestToken = $oauth->getRequestToken($this->twitterRequestUrl);
+                $requestToken = $oauth->getRequestToken(Yii::app()->twitterconnect->twitterRequestUrl);
                 
                 Yii::app()->session->add('oauth_token_secret', $requestToken['oauth_token_secret']);
-                $this->redirect($this->twitterAutorizeUrl . '?oauth_token=' . $requestToken['oauth_token'], true);
+                $this->redirect(Yii::app()->twitterconnect->twitterAutorizeUrl . '?oauth_token=' . $requestToken['oauth_token'], true);
             }
         }
         catch (Exception $e)
@@ -109,7 +95,7 @@ class TwitterConnectController extends Controller
     * @return 
     */
     public function getUserInfo($token, $secret) {
-
+        
         $oauth = Yii::app()->twitterconnect->doOAuthConnection(OAUTH_SIG_METHOD_HMACSHA1, OAUTH_AUTH_TYPE_URI);
         $oauth->setToken($token, $secret);
         $oauth->fetch('http://twitter.com/account/verify_credentials.json');
