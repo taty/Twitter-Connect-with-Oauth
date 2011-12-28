@@ -20,6 +20,9 @@ For use [Yii Twitter Connect with Oauth][1] need to add some code to configure t
             'class' => 'ext.twitterconnect.TwitterConnect',
             'consumerKey' => 'YOUR_APP_CONSUMER_KEY',
             'consumerSecret' => 'YOUR_APP_CONSUMER_SECRET',
+            'twitterRequestUrl' => 'https://api.twitter.com/oauth/request_token',
+            'twitterAccessUrl' => 'https://api.twitter.com/oauth/access_token',
+            'twitterAutorizeUrl' => 'https://api.twitter.com/oauth/authorize' 
         )
 ```
 and you can add it in view section:
