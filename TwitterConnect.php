@@ -21,17 +21,38 @@
 class TwitterConnect extends CApplicationComponent {
 
     /**
-     * Description of consumerKey variable.
-     *
-     * @var string consumerKey.
-     */
+    * Description of consumerKey variable.
+    *
+    * @var string consumerKey.
+    */
     public $consumerKey;
+
     /**
-     * Description of consumerSecret variable.
-     *
-     * @var string consumerSecret.
-     */
+    * Description of consumerSecret variable.
+    *
+    * @var string consumerSecret.
+    */
     public $consumerSecret;
+    /**
+     * Description of twitterRequestUrl variable.
+     *
+     * @var string twitterRequestUrl.
+     */
+    public $twitterRequestUrl;
+    /**
+     * Description of twitterAccessUrl variable.
+     *
+     * @var string twitterAccessUrl.
+     */
+    public $twitterAccessUrl;
+    /**
+     * Description of twitterAutorizeUrl variable.
+     *
+     * @var string twitterAutorizeUrl.
+     */
+    public $twitterAutorizeUrl;
+
+
 
     /**
      * Initializes the controller.
@@ -41,7 +62,9 @@ class TwitterConnect extends CApplicationComponent {
      */
     public function init() {
         parent::init();
-
+        
+        Yii::app()->session->open();
+        
         if (!empty($this->consumerKey) && !empty($this->consumerSecret)) {
 
             Yii::setPathOfAlias('twitterconnect', dirname(__FILE__));
@@ -51,14 +74,32 @@ class TwitterConnect extends CApplicationComponent {
             Yii::app()->configure(array('controllerMap' => CMap::mergeArray(Yii::app()->controllerMap,
                                     array('twconnect' => array(
                                             'class' => 'TwitterConnectController',
-                                            'consumerKey' => $this->consumerKey,
-                                            'consumerSecret' => $this->consumerSecret
+                                            'twitterRequestUrl' => $this->twitterRequestUrl,
+                                            'twitterAccessUrl' => $this->twitterAccessUrl,
+                                            'twitterAutorizeUrl' => $this->twitterAutorizeUrl
                                         )
                                     )
                                 ))
             );
+            
         } else {
             throw new Exception('You need to add consumerKey and consumerSecret to config file');
         }
-    }   
+    }
+    /**
+    * Function doOAuthConnection.
+    *
+    * This method set oauth connection.
+    *
+    * @param string $method The method.
+    * @param string $type The type.
+    *
+    * @return
+    */
+    public function doOAuthConnection($method, $type)
+    {
+         $oauth = new OAuth($this->consumerKey, $this->consumerSecret, $method, $type);
+         $oauth->enableDebug();
+         return $oauth;
+    }
 }

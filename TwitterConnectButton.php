@@ -7,7 +7,6 @@
  * @link http://www.zfort.com/
  * @copyright Copyright &copy; 2000-2011 Zfort Group
  * @license http://www.zfort.com/terms-of-use
- * @version $Id$
  * @package packageName
  * @since 1.0
  *
@@ -85,13 +84,10 @@ class TwitterConnectButton extends CWidget
     * @return
     */
     public function run()
-    {
-        $session=new CHttpSession;
-        $session->open();
-
-        if(isset($_SESSION['twitter']) === true)
+    {        
+        if(!is_null(Yii::app()->session->get('twitter')))
         {
-            $twitterData = $_SESSION['twitter'];
+            $twitterData = Yii::app()->session->get('twitter');
             echo CHtml::image($twitterData['profile_image_url'], 'Profile').' '.$twitterData['screen_name'].'<br>';
             echo CHtml::link('Sign out', '/twconnect/logout');
         }
