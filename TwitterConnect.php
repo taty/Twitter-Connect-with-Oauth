@@ -78,7 +78,7 @@ class TwitterConnect extends CApplicationComponent
        );                    
     }
     /**
-    * Function doOAuthConnection.
+    * Function getOAuthConnection.
     *
     * This method set oauth connection.
     *
@@ -87,10 +87,77 @@ class TwitterConnect extends CApplicationComponent
     *
     * @return
     */
-    public function doOAuthConnection($method, $type)
+    public function getOAuthConnection($method, $type)
     {
          $oauth = new OAuth($this->consumerKey, $this->consumerSecret, $method, $type);
          $oauth->enableDebug();
          return $oauth;
+    }
+
+   /**
+    * Function userOAuth.
+    *
+    * This method do oauth connection.
+    *
+    * @return
+    */
+    public function userOAuth()
+    {
+        $oauth = $this->getOAuthConnection(OAUTH_SIG_METHOD_HMACSHA1, OAUTH_AUTH_TYPE_FORM);
+
+        try {
+            if (Yii::app()->request->getParam('oauth_token')!='' && !is_null(Yii::app()->session->get('oauth_token_secret')))
+            {
+
+                $oauth->setToken(Yii::app()->request->getParam('oauth_token'), Yii::app()->session->get('oauth_token_secret'));
+
+                $accessToken = $oauth->getAccessToken($this->twitterAccessUrl);
+
+                Yii::app()->session->add('oauth_token', $accessToken['oauth_token']);
+                Yii::app()->session->add('oauth_token_secret', $accessToken['oauth_token_secret']);
+
+                $response = $oauth->getLastResponse();
+
+                parse_str($response, $responseArr);
+                if (false === isset($responseArr['user_id']))
+                {
+                    throw new Exception(Yii::t('','Authentication failed.'));
+                }
+                echo CHtml::script('window.close();');
+
+            }
+            else
+            {
+                $requestToken = $oauth->getRequestToken($this->twitterRequestUrl);
+
+                Yii::app()->session->add('oauth_token_secret', $requestToken['oauth_token_secret']);
+                Yii::app()->request->redirect($this->twitterAutorizeUrl . '?oauth_token=' . $requestToken['oauth_token'], true);
+            }
+        }
+        catch (Exception $e)
+        {
+            throw new Exception(Yii::t("", "Response: {message}", array("{message}"=>$e->getMessage())));
+        }
+
+    }
+
+    /**
+    * Function getUserInfo.
+    *
+    * Function return user information.
+    *
+    * @param string $token  Token.
+    * @param string $secret Token secret.
+    *
+    * @return
+    */
+    
+    public function getUserInfo($token, $secret) {
+
+        $oauth = $this->getOAuthConnection(OAUTH_SIG_METHOD_HMACSHA1, OAUTH_AUTH_TYPE_URI);
+        $oauth->setToken($token, $secret);
+        $oauth->fetch('http://twitter.com/account/verify_credentials.json');
+        $info = $oauth->getLastResponse();
+        return CJSON::decode($info, true);
     }
 }
