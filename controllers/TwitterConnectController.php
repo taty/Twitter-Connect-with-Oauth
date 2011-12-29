@@ -29,7 +29,7 @@ class TwitterConnectController extends Controller
     */
     public function actionIndex() {
 
-        if (is_null(Yii::app()->session->get('twitter')))
+        if (true === is_null(Yii::app()->session->get('twitter')))
         {
             Yii::app()->twitterconnect->userOAuth();
             Yii::app()->session->add('twitter', Yii::app()->twitterconnect->getUserInfo(
