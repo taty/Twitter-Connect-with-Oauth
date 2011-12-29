@@ -3,7 +3,7 @@
 /**
  * TwitterConnectButton class file.
  *
- * @author Vakulenko Tatiana <vakulenko@zfort.net>
+ * @author Vakulenko Tatiana <tvakulenko@gmail.com>
  * @link http://www.zfort.com/
  * @copyright Copyright &copy; 2000-2011 Zfort Group
  * @license http://www.zfort.com/terms-of-use
