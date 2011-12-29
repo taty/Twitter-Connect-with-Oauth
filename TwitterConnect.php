@@ -17,6 +17,7 @@
  *
  * TwitterConnect allows you to authorizate with twitter
  */
+
 class TwitterConnect extends CApplicationComponent
 {
 
