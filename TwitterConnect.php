@@ -7,7 +7,6 @@
  * @link http://www.zfort.com/
  * @copyright Copyright &copy; 2000-2011 Zfort Group
  * @license http://www.zfort.com/terms-of-use
- * @version $Id$
  * @package packageName
  * @since 1.0
  *
@@ -18,22 +17,20 @@
  *
  * TwitterConnect allows you to authorizate with twitter
  */
-
 class TwitterConnect extends CApplicationComponent
 {
 
     /**
-    * Description of consumerKey variable.
-    *
-    * @var string consumerKey.
-    */
+     * Description of consumerKey variable.
+     *
+     * @var string consumerKey.
+     */
     public $consumerKey;
-
     /**
-    * Description of consumerSecret variable.
-    *
-    * @var string consumerSecret.
-    */
+     * Description of consumerSecret variable.
+     *
+     * @var string consumerSecret.
+     */
     public $consumerSecret;
     /**
      * Description of twitterRequestUrl variable.
@@ -54,8 +51,6 @@ class TwitterConnect extends CApplicationComponent
      */
     public $twitterAutorizeUrl;
 
-
-
     /**
      * Initializes the controller.
      *
@@ -64,52 +59,53 @@ class TwitterConnect extends CApplicationComponent
      */
     public function init() {
         parent::init();
-        
+
         Yii::setPathOfAlias('twitterconnect', dirname(__FILE__));
         Yii::import('twitterconnect.*');
         Yii::import('twitterconnect.controllers.*');
 
         Yii::app()->configure(array('controllerMap' => CMap::mergeArray(Yii::app()->controllerMap,
-                                     array('twconnect' => array(
-                                            'class' => 'TwitterConnectController',                                            
-                                        )
-                                    )
-                                ))
-       );                    
-    }
-    /**
-    * Function getOAuthConnection.
-    *
-    * This method set oauth connection.
-    *
-    * @param string $method The method.
-    * @param string $type   The type.
-    *
-    * @return
-    */
-    public function getOAuthConnection($method, $type)
-    {
-         $oauth = new OAuth($this->consumerKey, $this->consumerSecret, $method, $type);
-         $oauth->enableDebug();
-         return $oauth;
+                    array('twconnect' => array(
+                            'class' => 'TwitterConnectController',
+                        )
+                    )
+                ))
+        );
     }
 
-   /**
-    * Function userOAuth.
-    *
-    * This method do oauth connection.
-    *
-    * @return
-    */
-    public function userOAuth()
-    {
+    /**
+     * Function getOAuthConnection.
+     *
+     * This method set oauth connection.
+     *
+     * @param string $method The method.
+     * @param string $type   The type.
+     *
+     * @return
+     */
+    public function getOAuthConnection($method, $type) {
+        $oauth = new OAuth($this->consumerKey, $this->consumerSecret, $method, $type);
+        $oauth->enableDebug();
+        return $oauth;
+    }
+
+    /**
+     * Function userOAuth.
+     *
+     * This method do oauth connection.
+     *
+     * @return
+     */
+    public function userOAuth() {
         $oauth = $this->getOAuthConnection(OAUTH_SIG_METHOD_HMACSHA1, OAUTH_AUTH_TYPE_FORM);
 
         try {
-            if (Yii::app()->request->getParam('oauth_token')!='' && !is_null(Yii::app()->session->get('oauth_token_secret')))
+            if (Yii::app()->request->getParam('oauth_token') !== ''
+                    && false === is_null(Yii::app()->session->get('oauth_token_secret')))
             {
 
-                $oauth->setToken(Yii::app()->request->getParam('oauth_token'), Yii::app()->session->get('oauth_token_secret'));
+                $oauth->setToken(Yii::app()->request->getParam('oauth_token'),
+                        Yii::app()->session->get('oauth_token_secret'));
 
                 $accessToken = $oauth->getAccessToken($this->twitterAccessUrl);
 
@@ -121,37 +117,35 @@ class TwitterConnect extends CApplicationComponent
                 parse_str($response, $responseArr);
                 if (false === isset($responseArr['user_id']))
                 {
-                    throw new Exception(Yii::t('','Authentication failed.'));
+                    throw new Exception(Yii::t('', 'Authentication failed.'));
                 }
                 echo CHtml::script('window.close();');
-
-            }
+            } 
             else
             {
                 $requestToken = $oauth->getRequestToken($this->twitterRequestUrl);
 
                 Yii::app()->session->add('oauth_token_secret', $requestToken['oauth_token_secret']);
-                Yii::app()->request->redirect($this->twitterAutorizeUrl . '?oauth_token=' . $requestToken['oauth_token'], true);
+                Yii::app()->request->redirect($this->twitterAutorizeUrl . '?oauth_token='
+                        . $requestToken['oauth_token'], true);
             }
-        }
+        } 
         catch (Exception $e)
         {
-            throw new Exception(Yii::t("", "Response: {message}", array("{message}"=>$e->getMessage())));
+            echo Yii::t("", "Response: {message}", array("{message}" => $e->getMessage()));
         }
-
     }
 
     /**
-    * Function getUserInfo.
-    *
-    * Function return user information.
-    *
-    * @param string $token  Token.
-    * @param string $secret Token secret.
-    *
-    * @return
-    */
-    
+     * Function getUserInfo.
+     *
+     * Function return user information.
+     *
+     * @param string $token  Token.
+     * @param string $secret Token secret.
+     *
+     * @return
+     */
     public function getUserInfo($token, $secret) {
 
         $oauth = $this->getOAuthConnection(OAUTH_SIG_METHOD_HMACSHA1, OAUTH_AUTH_TYPE_URI);
@@ -160,4 +154,5 @@ class TwitterConnect extends CApplicationComponent
         $info = $oauth->getLastResponse();
         return CJSON::decode($info, true);
     }
+
 }
